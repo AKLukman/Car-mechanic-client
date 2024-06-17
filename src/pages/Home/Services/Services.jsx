@@ -1,5 +1,6 @@
 import Service from "./Service";
 import useServices from "../../../hooks/useServices";
+import { useState } from "react";
 
 const Services = () => {
   // const [services, setServices] = useState([]);
@@ -8,7 +9,16 @@ const Services = () => {
   //     .then((res) => res.json())
   //     .then((data) => setServices(data));
   // }, []);
-  const services = useServices();
+  const [asc, setAsc] = useState(true);
+  const [search, setSearch] = useState("");
+  const services = useServices(asc, search);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchText = e.target.search.value;
+    setSearch(searchText);
+  };
+
   return (
     <div>
       <div className="mt-4 text-center">
@@ -19,6 +29,29 @@ const Services = () => {
           humour, or randomised<br></br> words which do not look even slightly
           believable.
         </p>
+        <button
+          onClick={() => setAsc(!asc)}
+          className="btn btn-outline btn-secondary"
+        >
+          {asc ? "Price: High to Low" : "Price: Low to High"}
+        </button>
+        <p>Min to max</p>
+        <div>
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              className="grow"
+              placeholder="Search"
+              name="search"
+            />
+
+            <input
+              className="btn btn-outline btn-success"
+              type="submit"
+              value="Search"
+            />
+          </form>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
